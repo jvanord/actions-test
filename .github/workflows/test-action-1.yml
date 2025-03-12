@@ -9,18 +9,16 @@ jobs:
       - name: Say Hello
         run: echo "Hello..."
       - name: Parse Branch Name
-        run: echo 'BRANCH_NAME=$(GITHUB_REF#refs/heads/release/)' >> $GITHUB_ENV
+        run: echo 'BRANCH_NAME=($GITHUB_REF#refs/heads/release/)' >> $GITHUB_ENV
       - name: Parse Branch Name Last
-        run: echo 'BRANCH_NAME_LAST=$(GITHUB_REF##*/)' >> $GITHUB_ENV
+        run: echo 'BRANCH_NAME_LAST=($GITHUB_REF##*/)' >> $GITHUB_ENV
       - name: Determine Hosting Channel
         env:
-          CHANNEL_TEST: ${{ steps.get_branch_name.outputs.name == 'prod' && 'live' || steps.get_branch_name.outputs.name }}
-        run: echo '${{ env.BRANCH_NAME }}'
-      #- name: Echo Channel
-      #  env:
-      #    CHANNEL: $ {{ steps.get_channel.outputs.channel }}
-      #  run: |
-      #    echo 'branch_name = $BRANCH_NAME'
-      #    echo 'branch_name_last = $BRANCH_NAME_LAST'
-      #    echo 'channel_test = $CHANNEL_TEST'
-      #    echo 'channel = $CHANNEL'
+          CHANNEL_TEST: ${{ env.BRANCH_NAME_LAST == 'prod' && 'live' || env.BRANCH_NAME_LAST }}
+        run: echo 'CHANNEL=${{ env.CHANNEL_TEST }}' >> $GITHUB_ENV
+      - name: Echo Data
+        run: |
+          echo 'branch_name = ${{ env.BRANCH_NAME }}'
+          echo 'branch_name_last = ${{ env.BRANCH_NAME_LAST }}'
+          echo 'channel_test = ${{ env.CHANNEL_TEST }}'
+          echo 'channel = ${{ env.CHANNEL }}'
