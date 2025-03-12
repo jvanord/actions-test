@@ -6,24 +6,20 @@ jobs:
   parse_branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Say Hello
+        run: echo "Hello..."
       - name: Parse Branch Name
-        id: get_branch_name
-        run: echo '::set-output name=value::${GITHUB_REF#refs/heads/release/}'
+        run: echo 'BRANCH_NAME=${GITHUB_REF#refs/heads/release/}' >> $GITHUB_ENV
       - name: Parse Branch Name Last
-        id: get_branch_name_last
-        run: echo '::set-output name=value::${GITHUB_REF###*/}'
-      - name: Determine Hosting Channel
-        id: get_channel
-        env:
-          BRANCH_NAME: ${{ steps.get_branch_name.outputs.name }}
-          BRANCH_NAME_LAST: ${{ steps.get_branch_name_last.outputs.name }}
-          CHANNEL_TEST: ${{ steps.get_branch_name.outputs.name == 'prod' && 'live' || steps.get_branch_name.outputs.name }}
-        run: echo '::set-output channel=$CHANNEL_TEST'
-      - name: Echo Channel
-        env:
-          CHANNEL: $ {{ steps.get_channel.outputs.channel }}
-        run: |
-          echo 'branch_name = $BRANCH_NAME'
-          echo 'branch_name_last = $BRANCH_NAME_LAST'
-          echo 'channel_test = $CHANNEL_TEST'
-          echo 'channel = $CHANNEL'
+        run: echo 'BRANCH_NAME_LAST=${GITHUB_REF###*/}' >> $GITHUB_ENV
+      #- name: Determine Hosting Channel
+      #  env:
+      #    CHANNEL_TEST: ${{ steps.get_branch_name.outputs.name == 'prod' && 'live' || steps.get_branch_name.outputs.name }}
+      #- name: Echo Channel
+      #  env:
+      #    CHANNEL: $ {{ steps.get_channel.outputs.channel }}
+      #  run: |
+      #    echo 'branch_name = $BRANCH_NAME'
+      #    echo 'branch_name_last = $BRANCH_NAME_LAST'
+      #    echo 'channel_test = $CHANNEL_TEST'
+      #    echo 'channel = $CHANNEL'
