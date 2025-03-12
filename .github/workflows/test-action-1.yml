@@ -3,26 +3,15 @@ on:
   push:
     branches: release/*
 jobs:
-  try_1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say Hello
-        run: echo "Hello..."
-      - name: Found on Internet
-        run: echo 'running on branch ${GITHUB_REF##*/}'
-      - name: Var
-        run: echo 'VAR=(${GITHUB_REF}#refs/heads/)' >> $GITHUB_ENV
-      - name: Echo Data
-        run: echo 'var = ${{ env.VAR }}'
   try_2:
     runs-on: ubuntu-latest
     steps:
       - name: Say Hello
         run: echo "Hello..."
       - name: Found on Internet
-        run: echo 'running on branch ${GITHUB_REF##*/}'
+        run: echo running on branch ${GITHUB_REF##*/}
       - name: Var
-        run: echo 'VAR=(${{github.ref_name}}##*/)' >> $GITHUB_ENV
+        run: echo VAR=${GITHUB_REF##*/} >> $GITHUB_ENV
       - name: Echo Data
         run: echo 'var = ${{ env.VAR }}'
   try_3:
@@ -33,7 +22,7 @@ jobs:
       - name: Found on Internet
         run: echo 'running on branch ${GITHUB_REF##*/}'
       - name: Var
-        run: echo 'VAR=${{github.ref}}#refs/heads/' >> $GITHUB_ENV
+        run: echo 'VAR=${GITHUB_REF##*/}' >> $GITHUB_ENV
       - name: Echo Data
         run: echo 'var = ${{ env.VAR }}'
   try_4:
@@ -44,7 +33,7 @@ jobs:
       - name: Found on Internet
         run: echo 'running on branch ${GITHUB_REF##*/}'
       - name: Var
-        run: echo 'VAR=$((GITHUB_REF#refs/heads/))' >> $GITHUB_ENV
+        run: 'echo VAR=${GITHUB_REF##*/} >> $GITHUB_ENV'
       - name: Echo Data
         run: echo 'var = ${{ env.VAR }}'
   final:
