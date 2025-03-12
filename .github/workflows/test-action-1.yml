@@ -9,12 +9,21 @@ jobs:
       - name: Parse Branch Name
         id: get_branch_name
         run: echo '::set-output name=value::${GITHUB_REF#refs/heads/release/}'
+      - name: Parse Branch Name Last
+        id: get_branch_name_last
+        run: echo '::set-output name=value::${GITHUB_REF###*/}'
       - name: Determine Hosting Channel
         id: get_channel
         env:
           BRANCH_NAME: ${{ steps.get_branch_name.outputs.name }}
-        run: echo '::set-output channel=${{ BRANCH_NAME == "prod" && "live" || BRANCH_NAME }}'
+          BRANCH_NAME_LAST: ${{ steps.get_branch_name_last.outputs.name }}
+          CHANNEL_TEST: ${{ BRANCH_NAME == "prod" && "live" || BRANCH_NAME }}
+        run: echo '::set-output channel=$CHANNEL_TEST'
       - name: Echo Channel
         env:
           CHANNEL: $ {{ steps.get_channel.outputs.channel }}
-        run: echo '${{ CHANNEL }}'
+        run: |
+          echo 'branch_name = $BRANCH_NAME'
+          echo 'branch_name_last = $BRANCH_NAME_LAST'
+          echo 'channel_test = $CHANNEL_TEST'
+          echo 'channel = $CHANNEL'
