@@ -12,9 +12,10 @@ jobs:
         run: echo 'BRANCH_NAME=${GITHUB_REF#refs/heads/release/}' >> $GITHUB_ENV
       - name: Parse Branch Name Last
         run: echo 'BRANCH_NAME_LAST=${GITHUB_REF###*/}' >> $GITHUB_ENV
-      #- name: Determine Hosting Channel
-      #  env:
-      #    CHANNEL_TEST: ${{ steps.get_branch_name.outputs.name == 'prod' && 'live' || steps.get_branch_name.outputs.name }}
+      - name: Determine Hosting Channel
+        env:
+          CHANNEL_TEST: ${{ steps.get_branch_name.outputs.name == 'prod' && 'live' || steps.get_branch_name.outputs.name }}
+        run: echo '$CHANNEL_TEST'
       #- name: Echo Channel
       #  env:
       #    CHANNEL: $ {{ steps.get_channel.outputs.channel }}
