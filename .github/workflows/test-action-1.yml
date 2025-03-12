@@ -17,7 +17,7 @@ jobs:
         env:
           BRANCH_NAME: ${{ steps.get_branch_name.outputs.name }}
           BRANCH_NAME_LAST: ${{ steps.get_branch_name_last.outputs.name }}
-          CHANNEL_TEST: ${{ BRANCH_NAME == "prod" && "live" || BRANCH_NAME }}
+          CHANNEL_TEST: ${{ steps.get_branch_name.outputs.name == "prod" && "live" || steps.get_branch_name.outputs.name }}
         run: echo '::set-output channel=$CHANNEL_TEST'
       - name: Echo Channel
         env:
