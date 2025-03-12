@@ -33,7 +33,7 @@ jobs:
       - name: Found on Internet
         run: echo 'running on branch ${GITHUB_REF##*/}'
       - name: Var
-        run: echo 'VAR=${{GITHUB_REF#refs/heads/}}' >> $GITHUB_ENV
+        run: echo 'VAR=${{github.ref}}#refs/heads/' >> $GITHUB_ENV
       - name: Echo Data
         run: echo 'var = ${{ env.VAR }}'
   try_4:
