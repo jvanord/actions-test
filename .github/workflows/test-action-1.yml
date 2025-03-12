@@ -1,0 +1,20 @@
+name: Test Action 1
+on:
+  push:
+    branches: release/*
+jobs:
+  parse_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse Branch Name
+        id: get_branch_name
+        run: echo '::set-output name=value::${GITHUB_REF#refs/heads/release/}'
+      - name: Determine Hosting Channel
+        id: get_channel
+        env:
+          BRANCH_NAME: ${{ steps.get_branch_name.outputs.name }}
+        run: echo '::set-output channel=${{ BRANCH_NAME == "prod" && "live" || BRANCH_NAME }}'
+      - name: Echo Channel
+        env:
+          CHANNEL: $ {{ steps.get_channel.outputs.channel }}
+        run: echo '${{ CHANNEL }}'
