@@ -8,10 +8,18 @@ jobs:
     steps:
       - name: Say Hello
         run: echo "Hello..."
-      #- name: Branch name
-      #  run: echo running on branch ${GITHUB_REF##*/}
+      - name: Found on Internet
+        run: echo 'running on branch ${GITHUB_REF##*/}'
       - name: Parse Branch Name
         run: echo 'BRANCH_NAME=${GITHUB_REF#refs/heads/}' >> $GITHUB_ENV
+      - name: Var 1
+        run: echo 'VAR1=(${GITHUB_REF}#refs/heads/)' >> $GITHUB_ENV
+      - name: Var 2
+        run: echo 'VAR2=(${{GITHUB_REF}}#refs/heads/)' >> $GITHUB_ENV
+      - name: Var 3
+        run: echo 'VAR3=${{GITHUB_REF#refs/heads/}}' >> $GITHUB_ENV
+      - name: Var 4
+        run: echo 'VAR4=$((GITHUB_REF#refs/heads/))' >> $GITHUB_ENV
       - name: Parse Branch Name Last
         run: echo 'BRANCH_NAME_LAST=${GITHUB_REF##*/}' >> $GITHUB_ENV
       - name: Determine Hosting Channel
@@ -24,3 +32,7 @@ jobs:
           echo 'branch_name_last = ${{ env.BRANCH_NAME_LAST }}'
           echo 'channel_test = ${{ env.CHANNEL_TEST }}'
           echo 'channel = ${{ env.CHANNEL }}'
+          echo 'var1 = ${{ env.VAR1 }}'
+          echo 'var2 = ${{ env.VAR2 }}'
+          echo 'var3 = ${{ env.VAR3 }}'
+          echo 'var4 = ${{ env.VAR4 }}'
