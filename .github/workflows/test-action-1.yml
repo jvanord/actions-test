@@ -3,55 +3,21 @@ on:
   push:
     branches: release/*
 jobs:
-  try_2:
+  use_branch_to_get_channel:
     runs-on: ubuntu-latest
     steps:
       - name: Say Hello
-        run: echo "Hello..."
+        run: echo Hello...
       - name: Found on Internet
         run: echo running on branch ${GITHUB_REF##*/}
-      - name: Var
-        run: echo VAR=${GITHUB_REF##*/} >> $GITHUB_ENV
-      - name: Echo Data
-        run: echo 'var = ${{ env.VAR }}'
-  try_3:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say Hello
-        run: echo "Hello..."
-      - name: Found on Internet
-        run: echo 'running on branch ${GITHUB_REF##*/}'
-      - name: Var
-        run: echo 'VAR=${GITHUB_REF##*/}' >> $GITHUB_ENV
-      - name: Echo Data
-        run: echo 'var = ${{ env.VAR }}'
-  try_4:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say Hello
-        run: echo "Hello..."
-      - name: Found on Internet
-        run: echo 'running on branch ${GITHUB_REF##*/}'
-      - name: Var
-        run: 'echo VAR=${GITHUB_REF##*/} >> $GITHUB_ENV'
-      - name: Echo Data
-        run: echo 'var = ${{ env.VAR }}'
-  final:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say Hello
-        run: echo "Hello..."
-      - name: Found on Internet
-        run: echo 'running on branch ${GITHUB_REF##*/}'
       - name: Parse Branch Name
-        run: echo 'BRANCH_NAME=${GITHUB_REF#refs/heads/}' >> $GITHUB_ENV
+        run: echo BRANCH_NAME=${GITHUB_REF##*/} >> $GITHUB_ENV
       - name: Determine Hosting Channel
         env:
-          CHANNEL_TEST: ${{ env.BRANCH_NAME_LAST == 'prod' && 'live' || env.BRANCH_NAME_LAST }}
-        run: echo 'CHANNEL=${{ env.CHANNEL_TEST }}' >> $GITHUB_ENV
+          CHANNEL_TEST: ${{ env.BRANCH_NAME == 'prod' && 'live' || env.BRANCH_NAME }}
+        run: echo CHANNEL=${{ env.CHANNEL_TEST }} >> $GITHUB_ENV
       - name: Echo Data
         run: |
-          echo 'branch_name = ${{ env.BRANCH_NAME }}'
-          echo 'branch_name_last = ${{ env.BRANCH_NAME_LAST }}'
-          echo 'channel_test = ${{ env.CHANNEL_TEST }}'
-          echo 'channel = ${{ env.CHANNEL }}'
+          echo branch_name = ${{ env.BRANCH_NAME }}
+          echo channel_test = ${{ env.CHANNEL_TEST }}
+          echo channel = ${{ env.CHANNEL }}
