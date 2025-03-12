@@ -3,7 +3,51 @@ on:
   push:
     branches: release/*
 jobs:
-  parse_branch:
+  try_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "Hello..."
+      - name: Found on Internet
+        run: echo 'running on branch ${GITHUB_REF##*/}'
+      - name: Var
+        run: echo 'VAR=(${GITHUB_REF}#refs/heads/)' >> $GITHUB_ENV
+      - name: Echo Data
+        run: echo 'var = ${{ env.VAR }}'
+  try_2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "Hello..."
+      - name: Found on Internet
+        run: echo 'running on branch ${GITHUB_REF##*/}'
+      - name: Var
+        run: echo 'VAR=(${{GITHUB_REF}}#refs/heads/)' >> $GITHUB_ENV
+      - name: Echo Data
+        run: echo 'var = ${{ env.VAR }}'
+  try_3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "Hello..."
+      - name: Found on Internet
+        run: echo 'running on branch ${GITHUB_REF##*/}'
+      - name: Var
+        run: echo 'VAR=${{GITHUB_REF#refs/heads/}}' >> $GITHUB_ENV
+      - name: Echo Data
+        run: echo 'var = ${{ env.VAR }}'
+  try_4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "Hello..."
+      - name: Found on Internet
+        run: echo 'running on branch ${GITHUB_REF##*/}'
+      - name: Var
+        run: echo 'VAR=$((GITHUB_REF#refs/heads/))' >> $GITHUB_ENV
+      - name: Echo Data
+        run: echo 'var = ${{ env.VAR }}'
+  final:
     runs-on: ubuntu-latest
     steps:
       - name: Say Hello
@@ -12,16 +56,6 @@ jobs:
         run: echo 'running on branch ${GITHUB_REF##*/}'
       - name: Parse Branch Name
         run: echo 'BRANCH_NAME=${GITHUB_REF#refs/heads/}' >> $GITHUB_ENV
-      - name: Var 1
-        run: echo 'VAR1=(${GITHUB_REF}#refs/heads/)' >> $GITHUB_ENV
-      - name: Var 2
-        run: echo 'VAR2=(${{GITHUB_REF}}#refs/heads/)' >> $GITHUB_ENV
-      - name: Var 3
-        run: echo 'VAR3=${{GITHUB_REF#refs/heads/}}' >> $GITHUB_ENV
-      - name: Var 4
-        run: echo 'VAR4=$((GITHUB_REF#refs/heads/))' >> $GITHUB_ENV
-      - name: Parse Branch Name Last
-        run: echo 'BRANCH_NAME_LAST=${GITHUB_REF##*/}' >> $GITHUB_ENV
       - name: Determine Hosting Channel
         env:
           CHANNEL_TEST: ${{ env.BRANCH_NAME_LAST == 'prod' && 'live' || env.BRANCH_NAME_LAST }}
@@ -32,7 +66,3 @@ jobs:
           echo 'branch_name_last = ${{ env.BRANCH_NAME_LAST }}'
           echo 'channel_test = ${{ env.CHANNEL_TEST }}'
           echo 'channel = ${{ env.CHANNEL }}'
-          echo 'var1 = ${{ env.VAR1 }}'
-          echo 'var2 = ${{ env.VAR2 }}'
-          echo 'var3 = ${{ env.VAR3 }}'
-          echo 'var4 = ${{ env.VAR4 }}'
