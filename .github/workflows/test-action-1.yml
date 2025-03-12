@@ -8,12 +8,12 @@ jobs:
     steps:
       - name: Say Hello
         run: echo "Hello..."
-      - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
+      #- name: Branch name
+      #  run: echo running on branch ${GITHUB_REF##*/}
       - name: Parse Branch Name
-        run: echo 'BRANCH_NAME=($GITHUB_REF#refs/heads/release/)' >> $GITHUB_ENV
+        run: echo 'BRANCH_NAME=${GITHUB_REF#refs/heads/}' >> $GITHUB_ENV
       - name: Parse Branch Name Last
-        run: echo 'BRANCH_NAME_LAST=($GITHUB_REF##*/)' >> $GITHUB_ENV
+        run: echo 'BRANCH_NAME_LAST=${GITHUB_REF##*/}' >> $GITHUB_ENV
       - name: Determine Hosting Channel
         env:
           CHANNEL_TEST: ${{ env.BRANCH_NAME_LAST == 'prod' && 'live' || env.BRANCH_NAME_LAST }}
